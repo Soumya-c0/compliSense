@@ -32,14 +32,21 @@ class ComplianceRAG:
             del self.vector_store.model
         gc.collect()
 
-        # ✅ IMPROVED PROMPT - Now includes "Partially Compliant" option
+        # ✅ IMPROVED PROMPT - Added explicit scoring guidance
         prompt = f"""You are a JSON generator. Output ONLY valid JSON. No other text.
 
 Contract Clause: {clause_text}
 
 GDPR Rules: {regulation_context}
 
-Analyze if the contract clause complies with GDPR rules.
+IMPORTANT SCORING RULES:
+- If clause violates GDPR (e.g., "indefinitely", "forever", "no time limit"): confidence_score should be HIGH (0.8-0.95) because you're CONFIDENT it's NON-COMPLIANT
+- If clause complies with GDPR: confidence_score should be HIGH (0.8-0.95) because you're CONFIDENT it's COMPLIANT
+- Only use LOW confidence (0.3-0.5) if you're UNSURE about compliance
+
+VIOLATIONS:
+- "Indefinitely", "forever", "permanently" = Non-Compliant, High Risk
+- "No retention limit", "keep all data" = Non-Compliant, High Risk
 
 Output this exact JSON format:
 {{
@@ -61,8 +68,13 @@ JSON:"""
 
             response_text = response["message"]["content"]
             
-            # ✅ Extract, validate, and return Pydantic model
-            return self._extract_and_validate_json(response_text)
+            # ✅ Extract and validate with Pydantic
+            result = self._extract_and_validate_json(response_text)
+            
+            # ✅ Apply rule-based overrides for critical violations
+            result = self._apply_rule_based_checks(clause_text, result)
+            
+            return result
 
         except Exception as e:
             # Return fallback with Pydantic validation
@@ -72,6 +84,71 @@ JSON:"""
                 risk_level="Unknown",
                 confidence_score=0.0
             )
+
+    def _apply_rule_based_checks(self, clause_text: str, result: ComplianceResult) -> ComplianceResult:
+        """
+        Apply rule-based overrides for known critical GDPR violations.
+        This acts as a safety net for cases where the LLM might misjudge.
+        
+        Args:
+            clause_text: Original contract clause
+            result: LLM-generated result
+            
+        Returns:
+            ComplianceResult: Corrected result if rules triggered
+        """
+        
+        clause_lower = clause_text.lower()
+        
+        # 🔥 RULE 1: Indefinite data retention violations
+        indefinite_keywords = [
+            "indefinitely", 
+            "indefinite", 
+            "forever", 
+            "permanently",
+            "no retention limit",
+            "retain all data",
+            "keep all data",
+            "without time limit",
+            "no expiration",
+            "never delete"
+        ]
+        
+        if any(keyword in clause_lower for keyword in indefinite_keywords):
+            # Override to Non-Compliant
+            result.compliance_status = "Non-Compliant"
+            result.risk_level = "High"
+            result.reason = "Indefinite data retention violates GDPR storage limitation principle (Article 5(1)(e))."
+            result.confidence_score = max(result.confidence_score, 0.85)
+        
+        # 🔥 RULE 2: Third-party sharing without consent
+        sharing_keywords = [
+            "share with third parties without consent",
+            "sell personal data",
+            "transfer data without permission"
+        ]
+        
+        if any(keyword in clause_lower for keyword in sharing_keywords):
+            result.compliance_status = "Non-Compliant"
+            result.risk_level = "High"
+            result.reason = "Sharing personal data without consent violates GDPR lawfulness principle (Article 6)."
+            result.confidence_score = max(result.confidence_score, 0.85)
+        
+        # 🔥 RULE 3: No data subject rights
+        rights_violations = [
+            "users cannot delete their data",
+            "no right to deletion",
+            "data cannot be removed",
+            "users cannot access their data"
+        ]
+        
+        if any(keyword in clause_lower for keyword in rights_violations):
+            result.compliance_status = "Non-Compliant"
+            result.risk_level = "High"
+            result.reason = "Denying data subject rights violates GDPR Articles 15-22 (right to access, deletion, etc.)."
+            result.confidence_score = max(result.confidence_score, 0.85)
+        
+        return result
 
     def _extract_and_validate_json(self, response_text: str) -> ComplianceResult:
         """
