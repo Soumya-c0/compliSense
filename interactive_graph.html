@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 400px;
+                 background-color: rgba(0,0,0,0);
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "Vendor", "label": "Vendor", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "cloud-based payment processing, transaction routing, and settlement infrastructure", "label": "cloud-based payment processing, transaction routing, and settlement infrastructure", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "Bank transaction data", "label": "Bank transaction data", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "Bank", "label": "Bank", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "physical or logical audits of the Vendor\u2019s systems", "label": "physical or logical audits of the Vendor\u2019s systems", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "third-party a\ufb03liates", "label": "third-party a\ufb03liates", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "Business Continuity Plan (BCP)", "label": "Business Continuity Plan (BCP)", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "customer data", "label": "customer data", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "operations", "label": "operations", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "service transition or migration", "label": "service transition or migration", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "international commercial laws", "label": "international commercial laws", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "binding arbitration in Singapore", "label": "binding arbitration in Singapore", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "Bank\u2019s domestic retail operations", "label": "Bank\u2019s domestic retail operations", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "distributed cloud servers located outside India", "label": "distributed cloud servers located outside India", "shape": "dot", "size": 15}, {"color": "#38bdf8", "font": {"color": "#e2e8f0"}, "id": "processing environments", "label": "processing environments", "shape": "dot", "size": 15}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall provide", "title": "shall provide", "to": "cloud-based payment processing, transaction routing, and settlement infrastructure"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "may store, process, and back up", "title": "may store, process, and back up", "to": "Bank transaction data"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall provide an annual self-certi\ufb01ed security report", "title": "shall provide an annual self-certi\ufb01ed security report", "to": "Bank"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "may sub-contract any portion of services to third-party a\ufb03liates", "title": "may sub-contract any portion of services to third-party a\ufb03liates", "to": "third-party a\ufb03liates"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall maintain a Business Continuity Plan (BCP)", "title": "shall maintain a Business Continuity Plan (BCP)", "to": "Business Continuity Plan (BCP)"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "may retain all customer data inde\ufb01nitely", "title": "may retain all customer data inde\ufb01nitely", "to": "customer data"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall cease operations immediately", "title": "shall cease operations immediately", "to": "operations"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall not be obligated to assist in service transition or migration", "title": "shall not be obligated to assist in service transition or migration", "to": "service transition or migration"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall provide cloud-based payment processing, transaction routing, and settlement infrastructure", "title": "shall provide cloud-based payment processing, transaction routing, and settlement infrastructure", "to": "Bank\u2019s domestic retail operations"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "may store, process, and back up all Bank transaction data", "title": "may store, process, and back up all Bank transaction data", "to": "distributed cloud servers located outside India"}, {"arrows": "to", "color": "#475569", "from": "Vendor", "label": "shall ensure a minimum uptime of 99.9% across all processing environments", "title": "shall ensure a minimum uptime of 99.9% across all processing environments", "to": "processing environments"}, {"arrows": "to", "color": "#475569", "from": "Bank", "label": "shall not be permitted to conduct", "title": "shall not be permitted to conduct", "to": "physical or logical audits of the Vendor\u2019s systems"}, {"arrows": "to", "color": "#475569", "from": "Bank", "label": "shall be governed by international commercial laws", "title": "shall be governed by international commercial laws", "to": "international commercial laws"}, {"arrows": "to", "color": "#475569", "from": "Bank", "label": "shall be resolved through binding arbitration in Singapore", "title": "shall be resolved through binding arbitration in Singapore", "to": "binding arbitration in Singapore"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -8000,
+            "springConstant": 0.001,
+            "springLength": 150
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

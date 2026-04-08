@@ -1,0 +1,11 @@
+streamlit
+chromadb
+langchain-text-splitters
+langchain-community
+sentence-transformers
+google-generativeai
+paddlepaddle
+paddleocr
+PyMuPDF
+numpy
+fpdf
