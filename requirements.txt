@@ -6,7 +6,6 @@ sentence-transformers
 google-generativeai
 paddlepaddle
 PyMuPDF
-numpy
 fpdf
 pyvis
 networkx
@@ -14,3 +13,4 @@ paddleocr==2.7.3
 opencv-python-headless
 torchvision
 numpy<2.0.0
+groq
