@@ -13,3 +13,4 @@ networkx
 paddleocr==2.7.3
 opencv-python-headless
 torchvision
+numpy<2.0.0
