@@ -307,21 +307,21 @@ elif st.session_state.current_page == "app":
             
         groq_key_present = bool(os.environ.get("GROQ_API_KEY"))
         if groq_key_present:
-            st.success("✅ Groq API Key loaded from .env")
+            st.success("Groq API Key loaded from .env")
         else:
-            st.error("❌ GROQ_API_KEY missing — add it to your .env file")
+            st.error("GROQ_API_KEY missing — add it to your .env file")
 
         st.markdown("---")
-        st.markdown("### 🏛️ Master Regulatory DB")
+        st.markdown("### Master Regulatory DB")
         st.markdown(f"**Status:** {get_master_db_status()}")
         available_frameworks = get_available_frameworks()
         st.session_state.selected_framework = st.selectbox(
-            "🎯 Target Jurisdiction:",
+            "Target Jurisdiction:",
             ["ALL"] + available_frameworks if available_frameworks else ["ALL"]
         )
 
         st.markdown("---")
-        st.markdown("### 📄 Contract Ingestion")
+        st.markdown("### Contract Ingestion")
         uploaded_file = st.file_uploader("Upload Target Contract", type=["pdf"])
 
         # STATE INITIALIZATION
@@ -460,7 +460,7 @@ elif st.session_state.current_page == "app":
                     """, unsafe_allow_html=True)
 
                 st.download_button(
-                    "📥 Download Official PDF Report",
+                    "Download Official PDF Report",
                     data=st.session_state.audit_pdf,
                     file_name=f"Fin-Audit_Report_{datetime.now().strftime('%Y%m%d')}.pdf",
                     mime="application/pdf",
@@ -617,13 +617,13 @@ elif st.session_state.current_page == "app":
                     
                     ev_col1, ev_col2 = st.columns([1, 1])
                     with ev_col1:
-                        st.markdown("#### 🧠 Entity Relationship Map")
+                        st.markdown("#### Entity Relationship Map")
                         st.markdown("<span style='font-size: 0.8rem; color: #94a3b8;'>Interactive GraphRAG map extracted from the document. Drag nodes to explore.</span>", unsafe_allow_html=True)
                         graph_html = render_interactive_graph()
                         components.html(graph_html, height=420)
                         
                     with ev_col2:
-                        st.markdown("#### 📄 Vector Retrieval Evidence")
+                        st.markdown("#### Vector Retrieval Evidence")
                         st.info(f"**Master Regulation Applied:**\n{raw_regulation}")
                         st.success(f"**Contract Text Pulled:**\n{raw_contract}")
 
