@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d0" for="edge" attr.name="relation" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="Vendor" />
+    <node id="cloud-based payment processing, transaction routing, and settlement infrastructure" />
+    <node id="Bank transaction data" />
+    <node id="internal forensic investigation" />
+    <node id="Bank" />
+    <node id="physical or logical audits of the Vendor’s systems" />
+    <node id="annual self-certiﬁed security report" />
+    <node id="third-party aﬃliates" />
+    <node id="Business Continuity Plan (BCP)" />
+    <node id="conﬁdentiality of customer data" />
+    <node id="customer data" />
+    <node id="immediately" />
+    <node id="assist in service transition or migration" />
+    <node id="This Agreement" />
+    <node id="international commercial laws" />
+    <node id="disputes" />
+    <node id="binding arbitration in Singapore" />
+    <edge source="Vendor" target="cloud-based payment processing, transaction routing, and settlement infrastructure">
+      <data key="d0">shall provide</data>
+    </edge>
+    <edge source="Vendor" target="Bank transaction data">
+      <data key="d0">shall back up</data>
+    </edge>
+    <edge source="Vendor" target="internal forensic investigation">
+      <data key="d0">shall conduct</data>
+    </edge>
+    <edge source="Vendor" target="Bank">
+      <data key="d0">shall notify</data>
+    </edge>
+    <edge source="Vendor" target="annual self-certiﬁed security report">
+      <data key="d0">shall provide</data>
+    </edge>
+    <edge source="Vendor" target="third-party aﬃliates">
+      <data key="d0">may sub-contract</data>
+    </edge>
+    <edge source="Vendor" target="Business Continuity Plan (BCP)">
+      <data key="d0">shall maintain</data>
+    </edge>
+    <edge source="Vendor" target="conﬁdentiality of customer data">
+      <data key="d0">shall ensure</data>
+    </edge>
+    <edge source="Vendor" target="customer data">
+      <data key="d0">shall retain</data>
+    </edge>
+    <edge source="Vendor" target="immediately">
+      <data key="d0">shall cease operations</data>
+    </edge>
+    <edge source="Vendor" target="assist in service transition or migration">
+      <data key="d0">shall not be obligated</data>
+    </edge>
+    <edge source="Bank" target="physical or logical audits of the Vendor’s systems">
+      <data key="d0">shall not be permitted</data>
+    </edge>
+    <edge source="This Agreement" target="international commercial laws">
+      <data key="d0">shall be governed</data>
+    </edge>
+    <edge source="disputes" target="binding arbitration in Singapore">
+      <data key="d0">shall be resolved</data>
+    </edge>
+  </graph>
+</graphml>
