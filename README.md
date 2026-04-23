@@ -43,3 +43,7 @@ An AI-driven compliance auditing system designed to ingest complex legal contrac
     streamlit run app.py
 ## Security & Privacy
 This application is designed with enterprise data privacy in mind. Contracts and regulatory master documents are embedded locally in ChromaDB and NetworkX. Prompts sent to external inference endpoints are strictly scoped to the targeted clauses to minimize data exposure.
+
+## **Live Demo**
+
+Try the application here :- https://finaudit-aj9scmhuwmu8jpoukw4glg.streamlit.app/
